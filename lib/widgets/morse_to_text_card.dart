@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import '../utils/morse_logic.dart';
 import 'converter_card.dart';
+import '../utils/tts_util.dart';
 
 class MorseToTextCard extends StatefulWidget {
   const MorseToTextCard({super.key});
@@ -19,6 +21,14 @@ class _MorseToTextCardState extends State<MorseToTextCard> {
     });
   }
 
+  Future<void> speak(String text) async {
+    await speakText(text);
+  }
+
+  Future<void> shareText(String text) async {
+    SharePlus.instance.share(ShareParams(text: text));
+  }
+
   @override
   void initState() {
     initMorse();
@@ -32,7 +42,8 @@ class _MorseToTextCardState extends State<MorseToTextCard> {
       controller: controller,
       output: output,
       onConvert: convert,
-      onPlay: null,
+      onPlay: () => speak(output),
+      onShare: () => shareText(output),
     );
   }
 }

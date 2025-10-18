@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import '../utils/morse_signal.dart';
+// import '../utils/morse_signal.dart';
 import '../utils/morse_logic.dart';
 import 'converter_card.dart';
+import 'package:audioplayers/audioplayers.dart';
+import '../utils/generate_morse_audio.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TextToMorseCard extends StatefulWidget {
   const TextToMorseCard({super.key});
@@ -20,8 +23,15 @@ class _TextToMorseCardState extends State<TextToMorseCard> {
     });
   }
 
-  void play(){
-    playMorse(output);
+  Future<void> playMorseAudio(String morse) async {
+    final filePath = await generateMorseAudio(morse);
+    final player = AudioPlayer();
+    await player.play(DeviceFileSource(filePath));
+  }
+
+  Future<void> shareMorseAudio(String morse) async {
+    final filePath = await generateMorseAudio(morse);
+    await SharePlus.instance.share(ShareParams(text: 'Here is my Morse message', files: [XFile(filePath)]));
   }
 
   @override
@@ -31,8 +41,8 @@ class _TextToMorseCardState extends State<TextToMorseCard> {
       controller: inputController,
       output: output,
       onConvert: convert,
-      onPlay: play,
+      onPlay: () => playMorseAudio(output),
+      onShare: () => shareMorseAudio(output),
     );
   }
-
 }

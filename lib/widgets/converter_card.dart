@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ConverterCard extends StatelessWidget {
   final String title;
   final TextEditingController controller;
   final String output;
   final VoidCallback onConvert;
-  final VoidCallback? onPlay; 
+  final VoidCallback onPlay;
+  final VoidCallback onShare;
 
   const ConverterCard({
     super.key,
@@ -14,7 +16,8 @@ class ConverterCard extends StatelessWidget {
     required this.controller,
     required this.output,
     required this.onConvert,
-    this.onPlay,
+    required this.onPlay,
+    required this.onShare,
   });
 
   @override
@@ -28,9 +31,13 @@ class ConverterCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title,
-                style: const TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 12),
             TextField(
               controller: controller,
@@ -45,14 +52,14 @@ class ConverterCard extends StatelessWidget {
                   onPressed: onConvert,
                   child: const Text('Convert'),
                 ),
-                if (onPlay != null) ...[
-                  const SizedBox(width: 12),
-                  ElevatedButton.icon(
-                    onPressed: onPlay,
-                    icon: const Icon(Icons.volume_up),
-                    label: const Text('Play'),
-                  )
-                ]
+                
+                const SizedBox(width: 12),
+                ElevatedButton.icon(
+                onPressed: onPlay,
+                icon: const Icon(Icons.volume_up),
+                label: const Text('Play'),
+                ),
+                
               ],
             ),
             const SizedBox(height: 12),
@@ -76,6 +83,14 @@ class ConverterCard extends StatelessWidget {
                     },
                   tooltip: 'Copy to Clipboard',
                   icon: const Icon(Icons.copy),
+                ),
+                IconButton(
+                  onPressed: output.isEmpty ?
+                  null :
+                  () {
+                    SharePlus.instance.share(ShareParams(text: output));
+                  },
+                  icon: const Icon(Icons.share),
                 ),
               ],
             ),
