@@ -43,6 +43,7 @@ class _TextToMorseCardState extends State<TextToMorseCard> {
       onConvert: convert,
       onPlay: () => playMorseAudio(output),
       onShare: () => shareMorseAudio(output),
+      onShareAudio: () => shareMorseAudio(output),
     );
   }
 }

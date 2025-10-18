@@ -9,6 +9,7 @@ class ConverterCard extends StatelessWidget {
   final VoidCallback onConvert;
   final VoidCallback onPlay;
   final VoidCallback onShare;
+  final VoidCallback? onShareAudio;
 
   const ConverterCard({
     super.key,
@@ -18,6 +19,7 @@ class ConverterCard extends StatelessWidget {
     required this.onConvert,
     required this.onPlay,
     required this.onShare,
+    this.onShareAudio,
   });
 
   @override
@@ -55,11 +57,18 @@ class ConverterCard extends StatelessWidget {
                 
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
-                onPressed: onPlay,
-                icon: const Icon(Icons.volume_up),
-                label: const Text('Play'),
+                  onPressed: output.isNotEmpty ? onPlay : null,
+                  icon: const Icon(Icons.volume_up),
+                  label: const Text('Play'),
                 ),
-                
+                if (onShareAudio != null) ...[
+                  const SizedBox(width: 12),
+                  ElevatedButton.icon(
+                    onPressed: output.isNotEmpty ? onShareAudio : null,
+                    icon: const Icon(Icons.share),
+                    label: const Text('Share'),
+                  ),
+                ],
               ],
             ),
             const SizedBox(height: 12),
