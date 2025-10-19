@@ -48,7 +48,7 @@ Future<String> generateMorseAudio(String morse) async {
   }
 
   final tempDir = await getTemporaryDirectory();
-  final filePath = '${tempDir.path}/morse_audio.wav';
+  final filePath = '${tempDir.path}/morse_audio_${DateTime.now().millisecondsSinceEpoch}.wav';
   final file = File(filePath);
 
   final byteData = Uint8List(44 + samples.length);
@@ -107,5 +107,13 @@ Future<String> generateMorseAudio(String morse) async {
 
   await file.writeAsBytes(byteData, flush: true);
 
+  try {
+    for (var f in tempDir.listSync()) {
+      if (f is File && f.path.contains('morse_audio_') && f.path != filePath) {
+        await f.delete();
+      }
+    }
+  } catch (_) {}
+  
   return filePath;
 }

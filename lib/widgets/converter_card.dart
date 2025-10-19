@@ -8,6 +8,7 @@ class ConverterCard extends StatelessWidget {
   final String output;
   final VoidCallback onConvert;
   final VoidCallback onPlay;
+  final bool isPlaying;
   final VoidCallback onShare;
   final VoidCallback? onShareAudio;
 
@@ -19,6 +20,7 @@ class ConverterCard extends StatelessWidget {
     required this.onConvert,
     required this.onPlay,
     required this.onShare,
+    required this.isPlaying,
     this.onShareAudio,
   });
 
@@ -48,22 +50,36 @@ class ConverterCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Row(
+            Wrap(
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
+                  ),
                   onPressed: onConvert,
                   child: const Text('Convert'),
                 ),
-                
-                const SizedBox(width: 12),
+                const SizedBox(width: 8),
                 ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    backgroundColor: isPlaying ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.secondary,
+                    foregroundColor: Colors.black,
+                  ),
                   onPressed: output.isNotEmpty ? onPlay : null,
-                  icon: const Icon(Icons.volume_up),
-                  label: const Text('Play'),
+                  icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+                  label: Text(isPlaying ? 'Pause' : 'Play'),
                 ),
                 if (onShareAudio != null) ...[
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      backgroundColor: Theme.of(context).colorScheme.tertiary,
+                      textStyle: TextStyle(color: Colors.white)
+                    ),
                     onPressed: output.isNotEmpty ? onShareAudio : null,
                     icon: const Icon(Icons.share),
                     label: const Text('Share'),

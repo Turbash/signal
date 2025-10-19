@@ -5,7 +5,8 @@ import 'converter_card.dart';
 import '../utils/tts_util.dart';
 
 class MorseToTextCard extends StatefulWidget {
-  const MorseToTextCard({super.key});
+  final VoidCallback? stopMorseAudio;
+  const MorseToTextCard({super.key, this.stopMorseAudio});
 
   @override
   State<MorseToTextCard> createState() => _MorseToTextCardState();
@@ -15,6 +16,10 @@ class _MorseToTextCardState extends State<MorseToTextCard> {
   final controller = TextEditingController();
   String output = '';
 
+  bool isSpeaking = false;
+  VoidCallback? stopMorseAudio;
+  late final Stream<bool> _ttsStream;
+
   void convert() {
     setState(() {
       output = morseToText(controller.text);
@@ -22,6 +27,11 @@ class _MorseToTextCardState extends State<MorseToTextCard> {
   }
 
   Future<void> speak(String text) async {
+  widget.stopMorseAudio?.call();
+    if (isSpeaking) {
+      await stopTTS();
+      return;
+    }
     await speakText(text);
   }
 
@@ -32,6 +42,10 @@ class _MorseToTextCardState extends State<MorseToTextCard> {
   @override
   void initState() {
     initMorse();
+    _ttsStream = ttsSpeakingStream;
+    _ttsStream.listen((speaking) {
+      if (mounted) setState(() => isSpeaking = speaking);
+    });
     super.initState();
   }
 
@@ -44,6 +58,7 @@ class _MorseToTextCardState extends State<MorseToTextCard> {
       onConvert: convert,
       onPlay: () => speak(output),
       onShare: () => shareText(output),
+      isPlaying: isSpeaking,
     );
   }
 }

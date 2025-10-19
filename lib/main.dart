@@ -11,22 +11,36 @@ class MorseSignalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  final textToMorseKey = GlobalKey<TextToMorseCardState>();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Morse Signal App',
+      title: 'MorseApp',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Morse Signal Converter'),
+          title: const Text('MorseApp'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: const [
-              TextToMorseCard(),
-              MorseToTextCard(),
+            children: [
+              TextToMorseCard(key: textToMorseKey),
+              MorseToTextCard(
+                key: UniqueKey(),
+                stopMorseAudio: () => textToMorseKey.currentState?.stopMorseAudio(),
+              ),
             ],
           ),
         ),
+      ),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.cyan,
+          primary: Colors.black,
+          secondary: Colors.lightBlueAccent,
+          tertiary: Colors.amber,
+          surface: Colors.teal,
+        ),
+        useMaterial3: true,
       ),
     );
   }

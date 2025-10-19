@@ -1,28 +1,31 @@
-import 'package:vibration/vibration.dart';
-import 'dart:async';
-import 'package:flutter_beep_plus/flutter_beep_plus.dart';
+// import 'package:vibration/vibration.dart';
+// import 'dart:async';
+// import 'package:flutter_beep_plus/flutter_beep_plus.dart';
 
-Future<void> playMorse(String morse) async {
-  final beepPlayer = FlutterBeepPlus();
+// Future<void> playMorse(String morse) async {
+//   final beepPlayer = FlutterBeepPlus();
 
-  for (var word in morse.trim().split(' / ')) {
-    for (var letter in word.trim().split(' ')) {
-      for (var ch in letter.split('')) {
-        final duration = ch == '.' ? 200 : 400;
+//   for (var word in morse.trim().split(' / ')) {
+//     for (var letter in word.trim().split(' ')) {
+//       for (var ch in letter.split('')) {
+//         final duration = ch == '.' ? 200 : 400;
 
-        beepPlayer.playSysSound(
-          ch == '.' 
-            ? AndroidSoundID.TONE_PROP_PROMPT 
-            : AndroidSoundID.TONE_CDMA_ABBR_ALERT
-        );
-        Vibration.vibrate(duration: duration);
+//         beepPlayer.playSysSound(
+//           ch == '.' 
+//             ? AndroidSoundID.TONE_PROP_PROMPT 
+//             : AndroidSoundID.TONE_CDMA_ABBR_ALERT
+//         );
+//         Vibration.vibrate(duration: duration);
 
-        await Future.delayed(Duration(milliseconds: 400));
-      }
+//         await Future.delayed(Duration(milliseconds: 400));
+//       }
 
-      await Future.delayed(Duration(milliseconds: 600));
-    }
+//       await Future.delayed(Duration(milliseconds: 600));
+//     }
 
-    await Future.delayed(Duration(milliseconds: 800));
-  }
-}
+//     await Future.delayed(Duration(milliseconds: 800));
+//   }
+// }
+
+//Used in earlier phase of development but currently not in use. Now using generate_morse_audio.dart for audio generation.
+//This was used to play morse code signals using beeps and vibrations.
