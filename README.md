@@ -14,6 +14,11 @@ An android app which helps to translate morse code to english language and vice-
 
 - Simple ui.
 
+## Demo Video(No sound)
+
+https://github.com/user-attachments/assets/9626e13f-b242-4a0e-9d77-d9e75a3097d7
+
+
 ## How to run locally
 
 1. Clone the Repository:
